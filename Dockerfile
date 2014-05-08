@@ -10,7 +10,7 @@ USER gitlab_ci
 WORKDIR /home/gitlab_ci
 ENV HOME /home/gitlab_ci
 
-RUN git clone https://github.com/gitlabhq/gitlab-ci.git gitlab-ci -b v5.0.0 
+RUN git clone https://github.com/gitlabhq/gitlab-ci.git gitlab-ci -b v5.0.0 --depth=1
 
 RUN mkdir -p gitlab-ci/log/ gitlab-ci/tmp/pids/ gitlab-ci/tmp/sockets/ && \
 	chmod -R u+rwX gitlab-ci/log/ && \
