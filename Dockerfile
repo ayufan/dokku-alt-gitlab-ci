@@ -32,3 +32,4 @@ ADD start /start
 
 # Start everything
 EXPOSE 8080
+ENTRYPOINT ["/start"]
