@@ -31,4 +31,4 @@ ADD gitlab-ci/ /home/gitlab_ci/gitlab-ci/config/
 ADD start /start
 
 # Start everything
-EXPOSE 22 8080
+EXPOSE 8080
