@@ -12,7 +12,8 @@ ENV HOME /home/gitlab_ci
 
 RUN git clone https://github.com/gitlabhq/gitlab-ci.git gitlab-ci -b v5.0.0 
 
-RUN chmod -R u+rwX gitlab-ci/log/ && \
+RUN mkdir -p gitlab-ci/log/ &&
+	chmod -R u+rwX gitlab-ci/log/ && \
 	chmod -R u+rwX gitlab-ci/tmp/ && \
 	chmod -R u+rwX gitlab-ci/tmp/pids/ && \
 	chmod -R u+rwX gitlab-ci/tmp/sockets/
