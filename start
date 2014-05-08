@@ -18,12 +18,12 @@ trap onexit SIGTERM SIGINT EXIT
 /usr/bin/redis-server /etc/redis/redis.conf
 
 cd /home/gitlab_ci/gitlab-ci
-su git -c "bundle exec rake assets:precompile RAILS_ENV=$RAILS_ENV"
-su git -c "bundle exec unicorn_rails -c config/unicorn.rb -E $RAILS_ENV -p 8080" &
-su git -c "bundle exec sidekiq -q runner,default -e $RAILS_ENV -P tmp/pids/sidekiq.pd" >> log/sidekiq.log 2>&1 &
+su gitlab_ci -c "bundle exec rake assets:precompile RAILS_ENV=$RAILS_ENV"
+su gitlab_ci -c "bundle exec unicorn_rails -c config/unicorn.rb -E $RAILS_ENV -p 8080" &
+su gitlab_ci -c "bundle exec sidekiq -q runner,default -e $RAILS_ENV -P tmp/pids/sidekiq.pd" >> log/sidekiq.log 2>&1 &
 
 while true; do
-	su git -c "bundle exec rake schedule_builds" >> log/schedule_builds.log 2>&1 &
+	su gitlab_ci -c "bundle exec rake schedule_builds" >> log/schedule_builds.log 2>&1 &
 	sleep 1h
 done &
 
