@@ -1,0 +1,29 @@
+#!/bin/bash
+
+source /app/.env
+
+set -xe
+
+export RAILS_ENV=${RAILS_ENV:=production}
+
+onexit() {
+  echo SIGINT received
+  echo sending SIGTERM to all processes
+  children=$(ps --ppid=$$ -o pid='')
+  kill -- $children &> /dev/null
+  sleep 8s
+}
+trap onexit SIGTERM SIGINT EXIT
+
+/usr/bin/redis-server /etc/redis/redis.conf
+
+cd /home/gitlab_ci/gitlab-ci
+su git -c "bundle exec unicorn_rails -c config/unicorn.rb -E $RAILS_ENV -p 8080" &
+su git -c "bundle exec sidekiq -q runner,default -e $RAILS_ENV -P tmp/pids/sidekiq.pd" >> log/sidekiq.log 2>&1 &
+
+while true; do
+	su git -c "bundle exec rake schedule_builds" >> log/schedule_builds.log 2>&1 &
+	sleep 1h
+done &
+
+wait
