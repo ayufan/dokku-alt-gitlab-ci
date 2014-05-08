@@ -24,7 +24,6 @@ RUN git config --global user.name "GitLab CI" && \
 
 WORKDIR /home/gitlab_ci/gitlab-ci
 RUN bundle install --deployment --without development test postgres
-RUN bundle exec rake assets:precompile RAILS_ENV=production
 
 # add configs at the end
 USER root
