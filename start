@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source /app/.env
-
 set -xe
 
 export RAILS_ENV=${RAILS_ENV:=production}
